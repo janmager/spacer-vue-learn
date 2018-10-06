@@ -2,15 +2,7 @@
   <div class="home">
     <div class="wrapper">
       <Claim />
-      <div class="search">
-        <label for="search">Search</label>
-        <input 
-          id="search" 
-          name="search" 
-          v-model="searchValue"
-          @input="handleInput"
-        />
-      </div>
+      <SearchInput />
     </div>
   </div>
 </template>
@@ -19,6 +11,7 @@
   import axios from 'axios';
   import debounce from 'lodash.debounce';
   import Claim from '@/components/Claim.vue';
+  import SearchInput from '@/components/SearchInput.vue';
 
   const API = 'https://images-api.nasa.gov/search';
 
@@ -26,6 +19,7 @@
     name: 'Search',
     components: {
       Claim,
+      SearchInput,
     },
     data(){
       return{
@@ -56,23 +50,14 @@
     padding: 30px;
     margin: 0;
     width: 100%;
-  }
-
-  .search{
-    display: none;
-    flex-direction: column;
-    width: 95%;
-    max-width: 300px;
-
-    label{
-      font-family: Montserrat, sans-serif;
-    }
-
-    input{
-      height: 30px;
-      border: 0;
-      border-bottom: 1px solid black;
-      outline: none;
-    }
+    min-height: 100vh;
+    font-family: Montserrat, sans-serif;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../assets/bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 0%;
   }
 </style>
