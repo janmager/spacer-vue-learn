@@ -14,8 +14,18 @@
         :dark="step === 1"
       />
       <div class="results" v-if="results && !loading && step === 1">
-        <Item v-for="item in results" :item="item" :key="item.data[0].nasa_id"/>
+        <Item 
+          v-for="item in results" 
+          :item="item" 
+          @click.native="handleModalOpen(item)"
+          :key="item.data[0].nasa_id"/>
       </div>
+      <div class="lds-dual-ring" v-if="loading && step === 1"></div>
+      <Modal 
+        v-if="modalOpen"
+        @closeModal="modalOpen = false"
+        :item="modalItem" />
+      <Backdrop v-if="modalOpen" />
     </div>
   </div>
 </template>
@@ -27,6 +37,8 @@
   import SearchInput from '@/components/SearchInput.vue';
   import Background from '@/components/Background.vue';
   import Item from '@/components/Item.vue';
+  import Modal from '@/components/Modal.vue';
+  import Backdrop from '@/components/Backdrop.vue';
 
   const API = 'https://images-api.nasa.gov/search';
 
@@ -36,10 +48,14 @@
       Claim,
       SearchInput,
       Background,
-      Item
+      Item,
+      Modal,
+      Backdrop
     },
     data(){
       return{
+        modalItem: null,
+        modalOpen: false,
         loading: false,
         step: 0,
         searchValue: '',
@@ -60,6 +76,10 @@
             console.log(error);
           });
       }, 500),
+      handleModalOpen(item){
+        this.modalOpen = true;
+        this.modalItem = item;
+      },
     },
   };
 </script>
@@ -136,4 +156,30 @@
       grid-template-columns: 1fr;
     }
   }
+  .lds-dual-ring {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 46px;
+  height: 46px;
+  margin: 1px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
 </style>
